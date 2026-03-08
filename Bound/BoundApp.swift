@@ -11,7 +11,8 @@ import SwiftUI
 struct BoundApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
+                .preferredColorScheme(.dark)
         }
     }
 }
