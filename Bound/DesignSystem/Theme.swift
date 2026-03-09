@@ -2,7 +2,7 @@ import SwiftUI
 
 enum BoundColors {
     // MARK: - Backgrounds
-    static let background = Color(red: 0.04, green: 0.04, blue: 0.06)
+    static let background = Color(red: 0.086, green: 0.086, blue: 0.086)
     static let cardBackground = Color(red: 0.10, green: 0.10, blue: 0.18)
     static let surfaceGlass = Color.white.opacity(0.08)
 
