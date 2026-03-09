@@ -59,29 +59,38 @@ struct HomeView: View {
     private var topBar: some View {
         HStack(spacing: BoundSpacing.md) {
             AvatarView(url: viewModel.currentUser.avatarUrl, size: 40)
+                .padding(2)
+                .glassEffect(.regular, in: .circle)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text("@\(viewModel.currentUser.boundTag)")
-                    .font(BoundFont.headline)
+                    .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(.white)
                 Text(viewModel.currentUser.displayName)
-                    .font(BoundFont.caption)
+                    .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(BoundColors.textSecondary)
             }
 
             Spacer()
 
-            Button(action: {}) {
-                Image(systemName: "person.2.fill")
-                    .font(.system(size: 18))
-                    .foregroundStyle(.white)
-            }
+            HStack(spacing: 0) {
+                Button(action: {}) {
+                    Image(systemName: "person.badge.plus")
+                        .font(.system(size: 20, weight: .medium))
+                        .foregroundStyle(.white)
+                        .frame(width: 48, height: 44)
+                }
+                .buttonStyle(.plain)
 
-            Button(action: {}) {
-                Image(systemName: "magnifyingglass")
-                    .font(.system(size: 18))
-                    .foregroundStyle(.white)
+                Button(action: {}) {
+                    Image(systemName: "magnifyingglass")
+                        .font(.system(size: 20, weight: .medium))
+                        .foregroundStyle(.white)
+                        .frame(width: 48, height: 44)
+                }
+                .buttonStyle(.plain)
             }
+            .glassEffect(.regular, in: .capsule)
         }
         .padding(.top, BoundSpacing.sm)
     }
