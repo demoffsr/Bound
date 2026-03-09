@@ -10,16 +10,32 @@ struct MessageCardView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            // Aura gradient background
-            message.aura.gradient
-                .overlay {
-                    RadialGradient(
-                        colors: [.white.opacity(0.15), .clear],
-                        center: .center,
-                        startRadius: 20,
-                        endRadius: 200
-                    )
-                }
+            // Base background
+            Color.white.opacity(0.1)
+
+            // Blurred aura circles (diagonal: same color top-left↔bottom-right, top-right↔bottom-left)
+            Canvas { context, size in
+                let w = size.width
+                let h = size.height
+
+                // Top-left: startColor
+                let tl = Path(ellipseIn: CGRect(x: -w * 0.15, y: -h * 0.15, width: w * 0.75, height: h * 0.65))
+                context.fill(tl, with: .color(message.aura.startColor))
+
+                // Top-right: endColor
+                let tr = Path(ellipseIn: CGRect(x: w * 0.4, y: -h * 0.15, width: w * 0.75, height: h * 0.65))
+                context.fill(tr, with: .color(message.aura.endColor))
+
+                // Bottom-left: endColor
+                let bl = Path(ellipseIn: CGRect(x: -w * 0.15, y: h * 0.5, width: w * 0.75, height: h * 0.65))
+                context.fill(bl, with: .color(message.aura.endColor))
+
+                // Bottom-right: startColor
+                let br = Path(ellipseIn: CGRect(x: w * 0.4, y: h * 0.5, width: w * 0.75, height: h * 0.65))
+                context.fill(br, with: .color(message.aura.startColor))
+            }
+            .blur(radius: 50)
+            .scaleEffect(1.5)  // scale up so blurred edges don't reveal base
 
             // Content
             VStack(spacing: BoundSpacing.lg) {
@@ -30,7 +46,12 @@ struct MessageCardView: View {
                 Spacer()
 
                 // Avatar
-                AvatarView(url: message.sender?.avatarUrl, size: 56)
+                AvatarView(
+                    url: message.sender?.avatarUrl,
+                    size: 64,
+                    borderColor: .white.opacity(0.2),
+                    borderWidth: 1.7
+                )
 
                 // Message body
                 Text(message.body)
@@ -41,29 +62,35 @@ struct MessageCardView: View {
 
                 // Sender name
                 Text(message.sender?.displayName ?? "Unknown")
-                    .font(BoundFont.caption)
-                    .foregroundStyle(.white.opacity(0.8))
+                    .font(BoundFont.senderName)
+                    .foregroundStyle(.white.opacity(0.7))
 
                 Spacer()
 
                 // Bottom actions
-                bottomActions
+                GlassEffectContainer(spacing: BoundSpacing.md) {
+                    bottomActions
+                }
             }
-            .padding(BoundSpacing.xl)
+            .padding(18)
         }
-        .frame(height: 320)
+        .frame(height: 380)
         .clipShape(RoundedRectangle(cornerRadius: BoundRadius.card))
+        .overlay {
+            RoundedRectangle(cornerRadius: BoundRadius.card)
+                .stroke(.white.opacity(0.2), lineWidth: 1)
+        }
     }
 
     // MARK: - Sender Tag
 
     private var senderTag: some View {
         Text("@\(message.sender?.boundTag ?? "unknown") \u{2022} \(message.createdAt.boundFormatted)")
-            .font(BoundFont.small)
+            .font(BoundFont.caption)
             .foregroundStyle(.white.opacity(0.9))
             .padding(.horizontal, BoundSpacing.md)
-            .padding(.vertical, BoundSpacing.xs)
-            .background(.white.opacity(0.15), in: Capsule())
+            .padding(.vertical, BoundSpacing.sm)
+            .glassEffect(.regular.tint(.white.opacity(0.25)).interactive(), in: .capsule)
     }
 
     // MARK: - Bottom Actions
@@ -101,7 +128,7 @@ struct MessageCardView: View {
         } else {
             HStack(spacing: BoundSpacing.md) {
                 emojiButton
-                PillButton(title: "Write Back", style: .primary, action: onWriteBack)
+                writeBackButton
             }
             .transition(.scale.combined(with: .opacity))
         }
@@ -115,10 +142,20 @@ struct MessageCardView: View {
             BoundHaptics.light()
         } label: {
             Image(systemName: "face.smiling")
-                .font(.system(size: 20))
+                .font(.system(size: 22))
                 .foregroundStyle(.white)
-                .frame(width: 40, height: 40)
-                .background(.white.opacity(0.2), in: Circle())
+                .frame(width: 48, height: 48)
+                .glassEffect(.regular.tint(.white.opacity(0.25)).interactive(), in: .circle)
+        }
+    }
+
+    private var writeBackButton: some View {
+        Button(action: onWriteBack) {
+            Text("Write Back")
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundStyle(.white)
+                .frame(width: 198, height: 48)
+                .glassEffect(.regular.tint(.white.opacity(0.25)).interactive(), in: .capsule)
         }
     }
 }
