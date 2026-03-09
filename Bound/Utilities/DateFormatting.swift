@@ -13,7 +13,7 @@ extension Date {
             return "Yesterday, \(timeString)"
         } else {
             let dayFormatter = DateFormatter()
-            dayFormatter.dateFormat = "MMM d"
+            dayFormatter.dateFormat = "dd.MM.yyyy"
             return "\(dayFormatter.string(from: self)), \(timeString)"
         }
     }

@@ -56,8 +56,8 @@ enum PreviewData {
             senderId: alex.id,
             recipientId: currentUser.id,
             body: "Looking forward to our next adventure together!",
-            auraColorStart: "#3D47F0",
-            auraColorEnd: "#8C5CF5",
+            auraColorStart: "#0D7DF5",
+            auraColorEnd: "#200DF5",
             isRead: false,
             createdAt: Calendar.current.date(bySettingHour: 15, minute: 30, second: 0, of: .now)!,
             sender: alex
@@ -67,8 +67,8 @@ enum PreviewData {
             senderId: maria.id,
             recipientId: currentUser.id,
             body: "You make the world a better place just by being in it!",
-            auraColorStart: "#ED4A99",
-            auraColorEnd: "#F5405E",
+            auraColorStart: "#FF1493",
+            auraColorEnd: "#FF0055",
             isRead: false,
             createdAt: Calendar.current.date(bySettingHour: 14, minute: 15, second: 0, of: .now)!,
             sender: maria
@@ -78,8 +78,8 @@ enum PreviewData {
             senderId: james.id,
             recipientId: currentUser.id,
             body: "Thanks for always being there for me, buddy!",
-            auraColorStart: "#10BA82",
-            auraColorEnd: "#06B5D4",
+            auraColorStart: "#00E676",
+            auraColorEnd: "#00BCD4",
             isRead: true,
             createdAt: Calendar.current.date(bySettingHour: 11, minute: 0, second: 0, of: .now)!,
             sender: james
